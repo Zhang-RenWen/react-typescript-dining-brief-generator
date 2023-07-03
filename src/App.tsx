@@ -1,13 +1,6 @@
-/**
- * We're going to try two things here.
- *
- * - We want to make it so that the CurrentUser component accepts all
- * of the properties from the UserModel *except* for `accountId`.
- *
- * - We want the Friend component to read the properties from the
- * CurrentUser component and use the same props. (I know it's contrived,
- * but see if you can do it without reusing the same type.)
- */
+import './i18n';
+import { NationLabels } from './components/Label';
+import { useTranslation } from 'react-i18next';
 
 type UserModel = {
   accountId: string;
@@ -21,12 +14,6 @@ const currentUser = {
   isVerified: true
 };
 
-const friends: UserModel[] = [
-  { displayName: 'test', accountId: '234', isVerified: false },
-  { displayName: 'test2', accountId: '456', isVerified: true },
-  { displayName: 'test3', accountId: '789', isVerified: true }
-];
-
 const CurrentUser = ({ accountId, displayName, isVerified }: UserModel) => {
   return (
     <header className="current-user">
@@ -37,28 +24,17 @@ const CurrentUser = ({ accountId, displayName, isVerified }: UserModel) => {
   );
 };
 
-const Friend = ({ displayName, isVerified }: UserModel) => {
-  return (
-    <li className="friend">
-      {displayName} {isVerified && '✓'}
-    </li>
-  );
-};
-
-const Application = () => {
+const App = () => {
+  const { t } = useTranslation();
   return (
     <main>
       <CurrentUser {...currentUser} />
       <section>
-        <h3>Friends</h3>
-        <ul>
-          {friends.map((friend) => (
-            <Friend key={friend.accountId} {...friend} />
-          ))}
-        </ul>
+        <h3> {t('nation')}</h3>
+        <NationLabels />
       </section>
     </main>
   );
 };
 
-export default Application;
+export default App;
