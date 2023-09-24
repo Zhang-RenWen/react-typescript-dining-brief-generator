@@ -1,64 +1,23 @@
-/**
- * We're going to try two things here.
- *
- * - We want to make it so that the CurrentUser component accepts all
- * of the properties from the UserModel *except* for `accountId`.
- *
- * - We want the Friend component to read the properties from the
- * CurrentUser component and use the same props. (I know it's contrived,
- * but see if you can do it without reusing the same type.)
- */
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-type UserModel = {
-  accountId: string;
-  displayName: string;
-  isVerified: boolean;
-};
+import Nav from './components/Nav'
 
-const currentUser = {
-  displayName: 'user1',
-  accountId: '123',
-  isVerified: true
-};
+import Home from './views/Home'
+import About from './views/About'
+import NotFound from './views/NotFound'
 
-const friends: UserModel[] = [
-  { displayName: 'test', accountId: '234', isVerified: false },
-  { displayName: 'test2', accountId: '456', isVerified: true },
-  { displayName: 'test3', accountId: '789', isVerified: true }
-];
-
-const CurrentUser = ({ accountId, displayName, isVerified }: UserModel) => {
+const App = () => {
   return (
-    <header className="current-user">
-      <h2>
-        {displayName} {isVerified && '✅'}
-      </h2>
-    </header>
-  );
-};
+    <Router>
+      <Nav />
+      <Routes>
+        <Route exact path="/" element={<Home />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route element={<NotFound />}></Route>
+      </Routes>
+    </Router>
+  )
+}
 
-const Friend = ({ displayName, isVerified }: UserModel) => {
-  return (
-    <li className="friend">
-      {displayName} {isVerified && '✓'}
-    </li>
-  );
-};
-
-const Application = () => {
-  return (
-    <main>
-      <CurrentUser {...currentUser} />
-      <section>
-        <h3>Friends</h3>
-        <ul>
-          {friends.map((friend) => (
-            <Friend key={friend.accountId} {...friend} />
-          ))}
-        </ul>
-      </section>
-    </main>
-  );
-};
-
-export default Application;
+export default App
