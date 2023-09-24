@@ -1,40 +1,23 @@
-import './i18n';
-import { NationLabels } from './components/Label';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-type UserModel = {
-  accountId: string;
-  displayName: string;
-  isVerified: boolean;
-};
+import Nav from './components/Nav'
 
-const currentUser = {
-  displayName: 'user1',
-  accountId: '123',
-  isVerified: true
-};
-
-const CurrentUser = ({ accountId, displayName, isVerified }: UserModel) => {
-  return (
-    <header className="current-user">
-      <h2>
-        {displayName} {isVerified && '✅'}
-      </h2>
-    </header>
-  );
-};
+import Home from './views/Home'
+import About from './views/About'
+import NotFound from './views/NotFound'
 
 const App = () => {
-  const { t } = useTranslation();
   return (
-    <main>
-      <CurrentUser {...currentUser} />
-      <section>
-        <h3> {t('nation')}</h3>
-        <NationLabels />
-      </section>
-    </main>
-  );
-};
+    <Router>
+      <Nav />
+      <Routes>
+        <Route exact path="/" element={<Home />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route element={<NotFound />}></Route>
+      </Routes>
+    </Router>
+  )
+}
 
-export default App;
+export default App
